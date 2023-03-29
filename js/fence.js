@@ -14,12 +14,12 @@ let playCount = 0;
 //mit Positions Name / Latitude, Longitude / Video, Bild Link
 const posArray =   
 [
-  {
+ {
     name: ['Reihe1'],
     coord: "0,0"
   },
   {
-    name: ['01_Die_Ortsansaessigen','02_Steinbruch_Ort'],
+    name: ['01_Die_Ortsansaessigen'],
     coord: "48.688112,15.852433"
   },
   {
@@ -27,11 +27,11 @@ const posArray =
     coord: "48.688011,15.852956"
   },
   {
-    name: ['03_Verladestation','04_Das_Lager'],
+    name: ['03_Verladestation'],
     coord: "48.687832,15.853423"
   },
   {
-    name: ['05_Die_Ortschaften','06_Die_Kirche'],
+    name: ['04_Die_Verladerampe'],
     coord: "48.687839,15.853981"
   },
   {
@@ -39,80 +39,84 @@ const posArray =
     coord: "0,0"
   },
   {
-    name: ['24_Das_Lager_im_Westen'],
+    name: ['08_Die_Wirtschaft'],
     coord: "48.687754,15.852430"
   },
   {
-    name: ['08_Die_Wirtschaft','13_Das_Ziegelwerk'],
+    name: ['05_Die_Ortschaften'],
     coord: "48.687644,15.852956"
   },
   {
-    name: ['15_Das_Steinbrecherhaus_Betrieb'],
+    name: ['11_Der_Baron','28_Die_Schotterwerbung'],
     coord: "48.687434,15.853374"
   },
   {
-    name: ['33_Der_Landschaftsgarten','34_Die_Passionsspiele'],
+    name: ['13_Das_Ziegelwerk','27_Denunziert_und_deportiert'],
     coord: "48.687487,15.853916"
   },
   {
-    name: ['31_Der_Badeunfall'],
-    coord: "48.687339,15.854404"
-  },
-  {
-    name: ['Reihe3'],
+    name: ['Reihe9bis11'],
     coord: "0,0"
   },
   {
-    name: ['32_Die_Austrocknung_des_Teichs','11_Der_Baron'],
-    coord: "48.687012,15.854614"
+    name: ['33_Der_Landschaftsgarten','34_Die_Passionsspiele'],
+    coord: "48.687339,15.854404"
   },
   {
-    name: ['17_Das_NS-Arbeitsbuch_des_Steinbrucharbeiters','19_Die_Zwangsarbeit'],
-    coord: "48.686785,15.855027"
+    name: ['30_Der_Badeteich_und_das_Steinbrecherhaus'],
+    coord: "48.687120,15.853970"
   },
   {
-    name: ['22_Der_Kellerausbau','23_Der_Aufseher'],
-    coord: "48.686426,15.855102"
-  },
-  {
-    name: ['07_Die_Einfahrt','09_Die_Kollegen'],
-    coord: "48.686072,15.855005"
-  },
-  {
-    name: ['27_Denunziert_und_deportiert','28_Die_Schotterwerbung'],
-    coord: "48.685856,15.854571"
+    name: ['15_Das_Steinbrecherhaus_Betrieb','16_Das_Steinbrecherhaus_Stilllegung'],
+    coord: "48.687077,15.853421"
   },
   {
     name: ['Reihe4'],
     coord: "0,0"
   },
   {
-    name: ['29_Der_Badeteich','30_Der_Badeteich_und_das_Steinbrecherhaus'],
-    coord: "48.687120,15.853970"
-  },
-  {
-    name: ['16_Das_Steinbrecherhaus_Stilllegung'],
-    coord: "48.687077,15.853421"
-  },
-  {
-    name: ['35_Die_Wehrsportuebungen'],
+    name: ['04_Das_Lager','14_Das_Waechterhaus'],
     coord: "48.686724,15.853362 "
   },
   {
-    name: ['14_Das_Waechterhaus','12_Die_Betriebsbaracke'],
+    name: ['12_Die_Betriebsbaracke','18_Der_Gefolgschaftsraum'],
     coord: "48.686369,15.853397"
   },
   {
-    name: ['18_Der_Gefolgschaftsraum','20_Der_Betriebsfuehrer'],
+    name: ['20_Der_Betriebsfuehrer','21_Der_Nahrungsmangel'],
     coord: "48.686014,15.853445"
   },
   {
-    name: ['21_Der_Nahrungsmangel','25_Vor_der_Befreiung'],
+    name: ['23_Der_Aufseher','26_Tag_der_Befreiung'],
     coord: "48.685660,15.853467"
   },
   {
-    name: ['26_Tag_der_Befreiung','36_Rechtsradikale_Umtriebe'],
+    name: ['35_Die_Wehrsportuebungen','36_Rechtsradikale_Umtriebe'],
     coord: "48.685348,15.853703"
+  },
+  {
+    name: ['Reihe3'],
+    coord: "0,0"
+  },
+  {
+    name: ['29_Der_Badeteich','31_Der_Badeunfall'],
+    coord: "48.687012,15.854614"
+  },
+  {
+    name: ['32_Die_Austrocknung_des_Teichs'],
+    coord: "48.686785,15.855027"
+  },
+  {
+    name: ['09_Die_Kollegen','10_Das_Spalten'],
+    coord: "48.686426,15.855102"
+  },
+  {
+    name: ['22_Der_Kellerausbau','19_Die_Zwangsarbeit'],
+    coord: "48.686072,15.855005"
+  },
+  {
+    name: ['17_Das_NS-Arbeitsbuch_des_Steinbrucharbeiters','24_Das_Lager_im_Westen'],
+    coord: "48.685856,15.854571"
   }
 ]
 
