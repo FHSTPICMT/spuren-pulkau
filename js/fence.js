@@ -14,25 +14,25 @@ let playCount = 0;
 //mit Positions Name / Latitude, Longitude / Video, Bild Link
 const posArray =   
 [
- {
+  {
     name: ['Reihe1'],
     coord: "0,0"
   },
   {
     name: ['01_Die_Ortsansaessigen'],
-    coord: "48.688112,15.852433"
+    coord: "48.688178,15.852417"
   },
   {
     name: ['07_Die_Einfahrt'],
-    coord: "48.688011,15.852956"
+    coord: "48.688121,15.852941"
   },
   {
     name: ['03_Verladestation'],
-    coord: "48.687832,15.853423"
+    coord: "48.687997,15.853439"
   },
   {
     name: ['04_Die_Verladerampe'],
-    coord: "48.687839,15.853981"
+    coord: "48.687936,15.853981"
   },
   {
     name: ['Reihe2'],
@@ -40,19 +40,19 @@ const posArray =
   },
   {
     name: ['08_Die_Wirtschaft'],
-    coord: "48.687754,15.852430"
+    coord: "48.687835,15.852429"
   },
   {
     name: ['05_Die_Ortschaften'],
-    coord: "48.687644,15.852956"
+    coord: "48.687775,15.852960"
   },
   {
     name: ['11_Der_Baron','28_Die_Schotterwerbung'],
-    coord: "48.687434,15.853374"
+    coord: "48.687626,15.853462"
   },
   {
     name: ['13_Das_Ziegelwerk','27_Denunziert_und_deportiert'],
-    coord: "48.687487,15.853916"
+    coord: "48.687592,15.854011"
   },
   {
     name: ['Reihe9bis11'],
@@ -75,19 +75,19 @@ const posArray =
     coord: "0,0"
   },
   {
-    name: ['04_Das_Lager','14_Das_Waechterhaus'],
+    name: ['23_Der_Aufseher','14_Das_Waechterhaus'],
     coord: "48.686724,15.853362 "
   },
   {
-    name: ['12_Die_Betriebsbaracke','18_Der_Gefolgschaftsraum'],
+    name: ['20_Der_Betriebsfuehrer','18_Der_Gefolgschaftsraum'],
     coord: "48.686369,15.853397"
   },
   {
-    name: ['20_Der_Betriebsfuehrer','21_Der_Nahrungsmangel'],
+    name: ['12_Die_Betriebsbaracke','21_Der_Nahrungsmangel'],
     coord: "48.686014,15.853445"
   },
   {
-    name: ['23_Der_Aufseher','26_Tag_der_Befreiung'],
+    name: ['26_Tag_der_Befreiung'],
     coord: "48.685660,15.853467"
   },
   {
