@@ -9,51 +9,23 @@
     <title>Spuren lesbar machen</title>
   </head>
   <body>
-    <div class="content">
-      <div class="img-container">
-        <audio src="" id="audio"></audio>
-        <img src="" alt="music-cover" id="cover"/>
-        <button id="play" class="action-btn action-btn-big">
-          <i class="fas fa-play"></i>
-        </button>
-        <div class="progress-container">
-          <div class="progress">
-        </div>
-      </div>
+    <!-- Navigation bar -->
+    <header class="header">
+        <!-- Logo -->
+        <a href="#" class="logo">Granitsteinbruch</a>
+        <!-- Hamburger icon -->
+        <input class="side-menu" type="checkbox" id="side-menu"/>
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <!-- Menu -->
+        <nav class="nav">
+          <ul class="menu">
+            <li><a href="guide.html">Guide</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </nav>
+    </header>
+    <div class="flex w-100">
+      <img src="./img/00_Welcome.jpg" class="display-block overflow-auto"/>
     </div>
-    </div>
-
-    <div id="debug">
-      <p>
-        Current Location (lat, lon):<br/>
-        <span id="currentLat">locating...</span>&deg;, <span id="currentLon">locating...</span>&deg;
-      </p>
-      <p>
-        Distance from current target:<br/>
-        <span id="distance">0</span> km
-      </p>
-      <p>
-        Accuracy:<br/>
-        <span id="accuracyText">0</span> 
-      </p>
-      <p>
-        Point Count:<br/>
-        <span id="pointCountText">0</span> 
-      </p>
-      <p>
-        Wake Lock:<br/>
-        <span id="wakeText">0</span> 
-      </p>
-      <p>
-        Version Nr.: 21<br/>
-      </p>
-    </div>
-    <!-- JS -->
-    <!-- JQuery for $ Operator in JS -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/foundation.min.js"></script>
-    <script type="text/javascript" src="js/fence.js"></script>
-    <script type="text/javascript" src="js/player.js"></script>
-    
   </body>
 </html>
