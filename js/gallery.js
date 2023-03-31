@@ -33,11 +33,11 @@ var coordinates =
       coord: "48.687775,15.852960"
     },
     {
-      name: ['11_Der_Baron','28_Die_Schotterwerbung'],
+      name: ['11_Der_Baron', '28_Die_Schotterwerbung'],
       coord: "48.687626,15.853462"
     },
     {
-      name: ['13_Das_Ziegelwerk','27_Denunziert_und_deportiert'],
+      name: ['13_Das_Ziegelwerk', '27_Denunziert_und_deportiert'],
       coord: "48.687592,15.854011"
     },
     {
@@ -45,7 +45,7 @@ var coordinates =
       coord: "0,0"
     },
     {
-      name: ['33_Der_Landschaftsgarten','34_Die_Passionsspiele'],
+      name: ['33_Der_Landschaftsgarten', '34_Die_Passionsspiele'],
       coord: "48.687339,15.854404"
     },
     {
@@ -53,7 +53,7 @@ var coordinates =
       coord: "48.687120,15.853970"
     },
     {
-      name: ['15_Das_Steinbrecherhaus_Betrieb','16_Das_Steinbrecherhaus_Stilllegung'],
+      name: ['15_Das_Steinbrecherhaus_Betrieb', '16_Das_Steinbrecherhaus_Stilllegung'],
       coord: "48.687077,15.853421"
     },
     {
@@ -61,15 +61,15 @@ var coordinates =
       coord: "0,0"
     },
     {
-      name: ['23_Der_Aufseher','14_Das_Waechterhaus'],
+      name: ['23_Der_Aufseher', '14_Das_Waechterhaus'],
       coord: "48.686724,15.853362 "
     },
     {
-      name: ['20_Der_Betriebsfuehrer','18_Der_Gefolgschaftsraum'],
+      name: ['20_Der_Betriebsfuehrer', '18_Der_Gefolgschaftsraum'],
       coord: "48.686369,15.853397"
     },
     {
-      name: ['12_Die_Betriebsbaracke','21_Der_Nahrungsmangel'],
+      name: ['12_Die_Betriebsbaracke', '21_Der_Nahrungsmangel'],
       coord: "48.686014,15.853445"
     },
     {
@@ -77,7 +77,7 @@ var coordinates =
       coord: "48.685660,15.853467"
     },
     {
-      name: ['35_Die_Wehrsportuebungen','36_Rechtsradikale_Umtriebe'],
+      name: ['35_Die_Wehrsportuebungen', '36_Rechtsradikale_Umtriebe'],
       coord: "48.685348,15.853703"
     },
     {
@@ -85,7 +85,7 @@ var coordinates =
       coord: "0,0"
     },
     {
-      name: ['29_Der_Badeteich','31_Der_Badeunfall'],
+      name: ['29_Der_Badeteich', '31_Der_Badeunfall'],
       coord: "48.687012,15.854614"
     },
     {
@@ -93,28 +93,41 @@ var coordinates =
       coord: "48.686785,15.855027"
     },
     {
-      name: ['09_Die_Kollegen','10_Das_Spalten'],
+      name: ['09_Die_Kollegen', '10_Das_Spalten'],
       coord: "48.686426,15.855102"
     },
     {
-      name: ['22_Der_Kellerausbau','19_Die_Zwangsarbeit'],
+      name: ['22_Der_Kellerausbau', '19_Die_Zwangsarbeit'],
       coord: "48.686072,15.855005"
     },
     {
-      name: ['17_Das_NS-Arbeitsbuch_des_Steinbrucharbeiters','24_Das_Lager_im_Westen'],
+      name: ['17_Das_NS-Arbeitsbuch_des_Steinbrucharbeiters', '24_Das_Lager_im_Westen'],
       coord: "48.685856,15.854571"
     }
   ]
 
 let coordinateList = document.getElementById("coordinateList");
 
+coordinates.sort(compare);
 coordinates.forEach(function (pos) {
-  let li = document.createElement("li");
-  li.classList.add('card');
-  let imgPath =`img/${pos.name[0]}.jpg`;
-  li.style.backgroundImage = `url(${imgPath})`
-  if(pos && pos.name) {
+  if (pos && pos.name && !pos.name[0].includes('Reihe')) {
+    let li = document.createElement("li");
+    li.classList.add('card');
+    let imgPath = `img/${pos.name[0]}.jpg`;
+    li.style.backgroundImage = `url(${imgPath})`
     li.textContent = pos.name;
     coordinateList.appendChild(li);
   }
 });
+
+
+function compare( a, b ) {
+  if ( a.name[0] < b.name[0] ){
+    return -1;
+  }
+  if ( a.name[0] > b.name[0] ){
+    return 1;
+  }
+  return 0;
+}
+
