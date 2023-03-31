@@ -1,5 +1,8 @@
-const musicContainer = document.querySelector('.img-container');
+const musicContainer = document.querySelector('.img-container-gallery');
 const playBtn= document.querySelector('#play');
+const playGalleryBtn= document.querySelector('#play-gallery');
+const nextGalleryBtn= document.querySelector('#next-gallery');
+const prevGalleryBtn= document.querySelector('#prev-gallery');
 const prevBtn = document.querySelector('#prev');
 const nextBtn = document.querySelector('#next');
 const audio = document.querySelector('#audio');
@@ -11,7 +14,7 @@ const cover = document.querySelector('#cover');
 var elem = document.documentElement;
 
 // Song titles
-const songs=["00_Welcome", "04_Das_Lager"];
+const songs=["00_Welcome", '01_Die_Ortsansaessigen', '07_Die_Einfahrt','03_Verladestation','04_Die_Verladerampe', '08_Die_Wirtschaft','05_Die_Ortschaften', '11_Der_Baron','28_Die_Schotterwerbung', '13_Das_Ziegelwerk','27_Denunziert_und_deportiert', '33_Der_Landschaftsgarten','34_Die_Passionsspiele', '30_Der_Badeteich_und_das_Steinbrecherhaus', '15_Das_Steinbrecherhaus_Betrieb','16_Das_Steinbrecherhaus_Stilllegung', '23_Der_Aufseher','14_Das_Waechterhaus', '20_Der_Betriebsfuehrer','18_Der_Gefolgschaftsraum', '12_Die_Betriebsbaracke','21_Der_Nahrungsmangel', '26_Tag_der_Befreiung', '35_Die_Wehrsportuebungen','36_Rechtsradikale_Umtriebe', '29_Der_Badeteich','31_Der_Badeunfall','32_Die_Austrocknung_des_Teichs','09_Die_Kollegen','10_Das_Spalten', '22_Der_Kellerausbau','19_Die_Zwangsarbeit', '17_Das_NS-Arbeitsbuch_des_Steinbrucharbeiters','24_Das_Lager_im_Westen'];
 
 // Keep track of the songs
 let songIndex = 0;
@@ -37,21 +40,27 @@ function loadPosition(song)
 
 function playSong()
 {
-    musicContainer.classList.add('play');
+    //musicContainer.classList.add('play');
     playBtn.querySelector('i.fas').classList.remove('fa-play');
     playBtn.querySelector('i.fas').classList.add('fa-pause');
+    audio.play();
+}
+
+function playGallerySong()
+{
+    musicContainer.classList.add('play');
+    playGalleryBtn.querySelector('i.fas').classList.remove('fa-play');
+    playGalleryBtn.querySelector('i.fas').classList.add('fa-pause');
     audio.play();
 }
 
 function pauseSong()
 {
     musicContainer.classList.remove('play');
-    playBtn.querySelector('i.fas').classList.add('fa-play');
-    playBtn.querySelector('i.fas').classList.remove('fa-pause');
+    playGalleryBtn.querySelector('i.fas').classList.add('fa-play');
+    playGalleryBtn.querySelector('i.fas').classList.remove('fa-pause');
     audio.pause();
 }
-
-
 
 function updateProgress(e)
 {
@@ -70,21 +79,12 @@ function setProgress(e)
 }
 
 // Event Listeners
-playBtn.addEventListener('click', () =>
+if(playBtn != null)
 {
-    /*
-    const isPlaying = musicContainer.classList.contains('play');
-
-    if(isPlaying)
-    {
-        pauseSong();
-    }
-    else
-    {
-        playSong();
-    } */
+    playBtn.addEventListener('click', () =>
+{
     playSong();
-    //title.innerText = "Bewegen Sie sich durch das Gelände und entdecken Sie dessen Geschichte.";
+
     document.getElementById("play").style.display = "none";
     acquireLock();
     openFullscreen();
@@ -93,10 +93,35 @@ playBtn.addEventListener('click', () =>
         SearchTriggerPos();
     };
 })
+}
 
-// Change Song Events
-//prevBtn.addEventListener('click', prevSong);
-//nextBtn.addEventListener('click', nextSong);
+if(playGalleryBtn != null)
+{
+    playGalleryBtn.addEventListener('click', () =>
+    {
+        const isPlaying = musicContainer.classList.contains('play');
+
+        if(isPlaying)
+        {
+            pauseSong();
+        }
+        else
+        {
+            playGallerySong();
+        }
+
+        //document.getElementById("play").style.display = "none";
+        //acquireLock();
+        openFullscreen();
+    })
+
+    // Change Song Events
+    prevGalleryBtn.addEventListener('click', prevSong);
+    nextGalleryBtn.addEventListener('click', nextSong);
+}
+
+
+
 
 audio.addEventListener('timeupdate', updateProgress);
 
@@ -123,7 +148,7 @@ function prevSong()
     }
 
     loadSong(songs[songIndex]);
-    playSong();
+    playGallerySong();
 }
 
 function nextSong()
@@ -136,7 +161,7 @@ function nextSong()
     }
 
     loadSong(songs[songIndex]);
-    playSong();
+    playGallerySong();
 }
 
 //Fullscreen
