@@ -42,8 +42,11 @@ ul{
   overflow: hidden;
   background-repeat: no-repeat, repeat;
   background-size: cover;
+  cursor: pointer;
 }
-
+.card:hover {
+  opacity: 80%;
+}
 .flex {
   display: flex;
 }

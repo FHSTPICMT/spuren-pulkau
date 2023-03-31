@@ -112,14 +112,18 @@ coordinates.sort(compare);
 coordinates.forEach(function (pos) {
   if (pos && pos.name && !pos.name[0].includes('Reihe')) {
     let li = document.createElement("li");
-    li.classList.add('card');
+    const link = document.createElement("a");
+    link.href = "./detail.html"
+    link.target = '_blank'
+    link.classList.add('card', 'display-block', 'color-white');
     let imgPath = `img/${pos.name[0]}.jpg`;
-    li.style.backgroundImage = `url(${imgPath})`
-    li.textContent = pos.name;
+    link.style.backgroundImage = `url(${imgPath})`
+    link.textContent = pos.name;
+    li.appendChild(link)
+
     coordinateList.appendChild(li);
   }
 });
-
 
 function compare( a, b ) {
   if ( a.name[0] < b.name[0] ){
