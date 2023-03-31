@@ -32,9 +32,39 @@ ul{
   list-style: none;
 }
 
+.card {
+  background-color: var(--white);
+  padding: 20px;
+  margin: 5px;
+  border-radius: 10px;
+  min-height: 200px;
+  text-align: center;
+  overflow: hidden;
+  background-repeat: no-repeat, repeat;
+  background-size: cover;
+}
+
 .flex {
   display: flex;
 }
+.grid {
+  display: grid;
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0px, 1fr));
+}
+ .gap-2 {
+   gap: 0.5rem;
+ }
+ .p-2 {
+   padding: 0.5rem;
+ }
+ .items-center {
+   align-items: center;
+ }
+ .justify-center {
+   justify-content: center;
+ }
 
 .display-block {
   display: block;

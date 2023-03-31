@@ -110,7 +110,9 @@ let coordinateList = document.getElementById("coordinateList");
 
 coordinates.forEach(function (pos) {
   let li = document.createElement("li");
-
+  li.classList.add('card');
+  let imgPath =`img/${pos.name[0]}.jpg`;
+  li.style.backgroundImage = `url(${imgPath})`
   if(pos && pos.name) {
     li.textContent = pos.name;
     coordinateList.appendChild(li);
