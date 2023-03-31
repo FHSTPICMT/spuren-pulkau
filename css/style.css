@@ -34,6 +34,15 @@ html{
   background-color: rgba(255, 255, 255, 0);
   font-size: 40px;
   border: 0;
+  cursor: pointer;
+}
+
+.source-container{
+  color: rgb(100, 100, 100);
+  background-color: rgba(255, 255, 255, 0);
+  font-size: 15px;
+  border: 0;
+  padding-left: 2%;
 }
 
 .action-btn-np{
@@ -69,7 +78,7 @@ html{
   }
 
   .start-container{
-    width: 50%;
+    width: 70%;
     margin: 0;
     position: absolute;
     top: 50%;
@@ -149,7 +158,8 @@ html{
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    padding-left: 10%;
+    padding-left: 5%;
+        padding-right: 5%;
   }
 
   .img-container{
