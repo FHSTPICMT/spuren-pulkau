@@ -30,8 +30,8 @@ if(audio != null)
 function initApp()
 {
     //title.innerText = "Willkommen bei Spuren lesbar machen. Berühren Sie den Play Button um zu starten.";
-    audio.src = `audio/${songs[1]}.mp3`;
-    cover.src = `img/${songs[1]}.jpg`;
+    audio.src = `audio/${songs[0]}.mp3`;
+    cover.src = `img/${songs[0]}.jpg`;
 }
 
 function loadPosition(song)
