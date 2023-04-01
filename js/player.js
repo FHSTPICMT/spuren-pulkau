@@ -1,5 +1,7 @@
 const musicContainer = document.querySelector('.img-container-gallery');
 const playBtn= document.querySelector('#play');
+const fullGps= document.querySelector('#full-gps');
+const fullGallery= document.querySelector('#full-gallery');
 const playGalleryBtn= document.querySelector('#play-gallery');
 const nextGalleryBtn= document.querySelector('#next-gallery');
 const prevGalleryBtn= document.querySelector('#prev-gallery');
@@ -19,7 +21,11 @@ const songs=["00_Welcome", '01_Die_Ortsansaessigen', '07_Die_Einfahrt','03_Verla
 // Keep track of the songs
 let songIndex = 0;
 
-initApp();
+if(audio != null)
+{
+    initApp();
+}
+
 
 function initApp()
 {
@@ -84,10 +90,9 @@ if(playBtn != null)
     playBtn.addEventListener('click', () =>
 {
     playSong();
-
+    openFullscreen();
     document.getElementById("play").style.display = "none";
     acquireLock();
-    openFullscreen();
     audio.onended = function() {
         hasStarted = true;
         SearchTriggerPos();
@@ -100,7 +105,7 @@ if(playGalleryBtn != null)
     playGalleryBtn.addEventListener('click', () =>
     {
         const isPlaying = musicContainer.classList.contains('play');
-
+        openFullscreen();
         if(isPlaying)
         {
             pauseSong();
@@ -112,7 +117,6 @@ if(playGalleryBtn != null)
 
         //document.getElementById("play").style.display = "none";
         //acquireLock();
-        openFullscreen();
     })
 
     // Change Song Events
@@ -121,11 +125,26 @@ if(playGalleryBtn != null)
 }
 
 
+if(fullGallery != null)
+{
+    fullGallery.addEventListener('click', () =>
+    {
+        window.open("gallery.html", "_self");
+    })
+
+    fullGps.addEventListener('click', () =>
+    {
+        window.open("gps.html", "_self");
+    })
+}
+if(audio != null)
+{
+    audio.addEventListener('timeupdate', updateProgress);
+    progressContainer.addEventListener('click', setProgress);
+}
 
 
-audio.addEventListener('timeupdate', updateProgress);
 
-progressContainer.addEventListener('click', setProgress);
 
 //Automaticly continue when audio ended
 //audio.addEventListener('ended', nextSong);
@@ -167,6 +186,7 @@ function nextSong()
 //Fullscreen
 /* View in fullscreen */
 function openFullscreen() {
+    console.log("Fuuuullll");
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) { /* Safari */

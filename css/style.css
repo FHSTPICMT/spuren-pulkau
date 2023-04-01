@@ -25,7 +25,7 @@ html{
 .action-btn{
   color: rgb(100, 100, 100);
   background-color: rgba(255, 255, 255, 0);
-  font-size: 60px;
+  font-size: 40px;
   border: 0;
 }
 
@@ -48,7 +48,7 @@ html{
 .action-btn-np{
   color: rgb(100, 100, 100);
   background-color: rgba(255, 255, 255, 0);
-  font-size: 60px;
+  font-size: 40px;
   border: 0;
 }
 
@@ -131,7 +131,7 @@ html{
     position: absolute;
     margin-right: -10%;
     top: 81%;
-    left: 25%;
+    left: 28%;
   }
 
   .progress-container{
@@ -200,7 +200,7 @@ html{
     position: absolute;
     transform: translate(-50%,-50%);
     margin-right: -50%;
-    top: 115%;
+    top: 107%;
     left: 50%;
   }
 
