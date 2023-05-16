@@ -1,0 +1,7 @@
+{
+  "name": "spuren_lesen",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}

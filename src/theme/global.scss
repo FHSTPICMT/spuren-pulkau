@@ -1,0 +1,27 @@
+@use "./custom_variables" as *;
+
+@font-face {
+  font-family: 'robotoregular';
+  src: url('../assets/webfonts/roboto-regular-webfont.woff2') format('woff2'),
+  url('../assets/webfonts/roboto-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ion-content{
+  font-family:robotoregular !important;
+  font-size:1.1em;
+}
+
+h1 {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  cursor: pointer;
+}
+
+#background-content{
+  background-color: $background-color;
+}
+
+
+
