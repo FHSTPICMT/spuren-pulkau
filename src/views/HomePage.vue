@@ -1,18 +1,6 @@
 <template>
     <ion-page>
-        <!--    <ion-header :translucent="true">-->
-        <!--      <ion-toolbar>-->
-        <!--        <ion-title>Web Applikation DER STEINBRUCH, DAS LAGER UND DIE ORTSCHAFTEN</ion-title>-->
-        <!--      </ion-toolbar>-->
-        <!--    </ion-header>-->
-
         <ion-content :fullscreen="true">
-            <!--      <ion-header collapse="condense">-->
-            <!--        <ion-toolbar>-->
-            <!--          <ion-title size="large">Der Steinbruch</ion-title>-->
-            <!--        </ion-toolbar>-->
-            <!--      </ion-header>-->
-
             <div id="container">
                 <ion-row>
                     <ion-text color="white" size="--ion-font-size" class="ion-margin-end">
@@ -22,17 +10,17 @@
                 <ion-row>
                     <ion-list lines="none">
                         <ul class="navigation-list mt-6">
-                            <li>
+                            <li @click="this.$router.push('/gps')">
                                 <ion-icon color="white" :icon="globe()" class="mr-2 font-bold"></ion-icon>
                                 <strong>
                                     Mit GPS Empfang
                                 </strong>
                             </li>
-                            <li>
+                            <li @click="this.$router.push('/gallery')">
                                 <ion-icon color="white" :icon="image()" class="mr-2 font-bold"></ion-icon>
                                 <strong>Ersatzmodus ohne GPS Empfang</strong>
                             </li>
-                            <li>
+                            <li @click="this.$router.push('/info')">
                                 <ion-icon color="white" :icon="documentText()" class="mr-2 font-bold"></ion-icon>
                                 <strong>Projektbeschreibung und Quellen</strong>
                             </li>
