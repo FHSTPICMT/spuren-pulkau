@@ -1,8 +1,8 @@
 <template>
   <ion-page>
-    <ion-grid class="vertical-center">
+    <ion-grid class="vertical-center w-full p-0">
       <ion-row class="ion-align-items-center">
-        <ion-col>
+        <ion-col class="p-0">
           <div>
             <ion-img
                 :src="imageSource"
@@ -11,7 +11,7 @@
             <audio ref="audioPlayer" :src="audioSource" @timeupdate="onTimeUpdate"></audio>
             <progress class="w-full" :max="audioDuration" :value="currentTime"></progress>
           </div>
-          <div class="flex justify-between text-center">
+          <div class="flex justify-around text-center">
             <ion-button>
               <ion-icon slot="start" :icon="playSkipBackOutline()"></ion-icon>
             </ion-button>
