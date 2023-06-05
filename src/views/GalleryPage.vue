@@ -1,51 +1,114 @@
 <template>
-    <ion-page>
-        <!--    <ion-header :translucent="true">-->
-        <!--      <ion-toolbar>-->
-        <!--        <ion-title>Web Applikation DER STEINBRUCH, DAS LAGER UND DIE ORTSCHAFTEN</ion-title>-->
-        <!--      </ion-toolbar>-->
-        <!--    </ion-header>-->
-
-        <ion-content :fullscreen="true">
-            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
-                <div class="flex">
-                    <div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
-                    <div>
-                        <p class="font-bold">Coming Soon</p>
-                        <p class="text-sm">Hier wird an einer Gallerie gearbeitet.</p>
-                    </div>
-                </div>
-            </div>
-        </ion-content>
-    </ion-page>
+  <ion-page>
+    <ion-grid class="vertical-center">
+      <ion-row class="ion-align-items-center">
+        <ion-col>
+          <div>
+            <ion-img
+                :src="imageSource"
+                alt="Welcome"
+            ></ion-img>
+            <audio ref="audioPlayer" :src="audioSource" @timeupdate="onTimeUpdate"></audio>
+            <progress class="w-full" :max="audioDuration" :value="currentTime"></progress>
+          </div>
+          <div class="flex justify-between text-center">
+            <ion-button>
+              <ion-icon slot="start" :icon="playSkipBackOutline()"></ion-icon>
+            </ion-button>
+            <ion-button @click="toggleAudio">
+              <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="playOutline()"></ion-icon>
+              <ion-icon v-else slot="start" :icon="pauseOutline()"></ion-icon>
+            </ion-button>
+            <ion-button>
+              <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-page>
 </template>
 
-<script lang="ts">
+<script lang="js">
+// TODO - Fetch audio and photography dynamically
+import {defineComponent} from 'vue';
 import {
-    IonContent,
-    IonPage,
+  IonContent,
+  IonPage,
+  IonApp,
+  IonRouterOutlet,
+  IonModal, IonIcon, IonButton
+} from '@ionic/vue';
+import {IonRippleEffect} from '@ionic/vue';
+import {playOutline, playSkipBackOutline, playSkipForwardOutline, pauseOutline} from 'ionicons/icons';
+
+export default defineComponent({
+  components: {
     IonApp,
     IonRouterOutlet,
-    IonModal, IonIcon, IonButton
-} from '@ionic/vue';
-import {alertCircleOutline, person} from 'ionicons/icons';
-
-export default {
-    components: {IonApp, IonRouterOutlet, IonModal, IonIcon, IonButton, IonContent, IonPage},
-    data() {
-        return {
-            myTest: false,
-            allowsGeo: true,
-            geoWatcher: null,
-            locationHasBeenLoaded: false,
-            scan: false,
-            person,
-            alertCircleOutline,
-        };
+    IonModal,
+    IonIcon,
+    IonButton,
+    IonContent,
+    IonPage,
+    IonRippleEffect
+  },
+  mounted() {
+    this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
+      this.audioDuration = this.$refs.audioPlayer.duration;
+    });
+  },
+  data() {
+    return {
+      initPlay: true,
+      imageSource: 'src/assets/img/00_Welcome.jpg',
+      audioSource: 'src/assets/audio/00_Welcome.mp3',
+      shouldPlayAudio: false,
+      audioDuration: 0,
+      currentTime: 0
+    };
+  },
+  methods: {
+    pauseOutline() {
+      return pauseOutline
+    },
+    toggleAudio() {
+      this.initPlay = false
+      this.shouldPlayAudio = !this.shouldPlayAudio
+      if (this.shouldPlayAudio) {
+        this.playAudio()
+      } else {
+        this.pauseAudio()
+      }
+    },
+    playAudio() {
+      this.$refs.audioPlayer.play();
+    },
+    pauseAudio() {
+      this.$refs.audioPlayer.pause();
+    },
+    onTimeUpdate() {
+      this.currentTime = this.$refs.audioPlayer.currentTime;
+    },
+    playSkipForwardOutline() {
+      return playSkipForwardOutline
+    },
+    playSkipBackOutline() {
+      return playSkipBackOutline
+    },
+    playOutline() {
+      return playOutline
     }
-}
+  },
+});
 </script>
 
 <style scoped>
-
+.vertical-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 </style>
