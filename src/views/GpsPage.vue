@@ -6,41 +6,26 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
-      <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-           role="alert">
-        <div class="flex">
-          <div class="py-1">
-            <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 20 20">
-              <path
-                  d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="font-bold">Coming Soon</p>
-            <p class="text-sm">Hier wird an einer dynamischen Tour <br>durch das NS-Zwangarbeiterlager
-              gearbeitet.</p>
-          </div>
-        </div>
-      </div>
+    <ion-content v-if="allowsGeo" :fullscreen="true">
+      <gallery></gallery>
     </ion-content>
+
     <ion-modal :is-open="showModal"
                :backdrop-dismiss="false"
                id="no-geo-modal"
                ref="modal"
                trigger="open-custom-dialog">
-      <div class="wrapper p-4">
+      <div class="wrapper p-4 border-white border rounded">
         <ion-item>
           <ion-icon color="danger" :icon="alertCircleOutline"></ion-icon>
           <h1>Fehlende Standortdaten</h1>
         </ion-item>
-        <ion-item lines="none" class="pt-4">
+        <ion-item lines="none" class="pt-4 pb-6">
           Um unseren Service nutzen zu können benötigen wir deine Standortdaten. Bitte
           erlaube den Zugriff in den Einstellungen.
         </ion-item>
         <ion-buttons slot="end">
-          <ion-button :strong="true" @click="cancel()">Ok</ion-button>
+          <ion-button :strong="true" @click="cancel()" class="border border-white rounded text-white p-2">Ok</ion-button>
         </ion-buttons>
       </div>
     </ion-modal>
@@ -51,9 +36,10 @@
 import {IonApp, IonModal, IonRouterOutlet, IonIcon, IonButton, IonContent, IonPage} from '@ionic/vue';
 import {Geolocation} from "@capacitor/geolocation";
 import {person, alertCircleOutline} from "ionicons/icons";
+import Gallery from "@/components/Gallery.vue";
 
 export default {
-  components: {IonApp, IonRouterOutlet, IonModal, IonIcon, IonButton, IonContent, IonPage},
+  components: {Gallery, IonApp, IonRouterOutlet, IonModal, IonIcon, IonButton, IonContent, IonPage},
   data() {
     return {
       myTest: false,
@@ -160,5 +146,33 @@ ion-modal#no-geo-modal .wrapper {
 ion-item {
   --padding-start: 0;
   --padding-end: 0;
+}
+
+
+ion-modal {
+  --ion-background-color: rgba(0, 0, 0, 0.8); /* Change modal background color */
+}
+
+ion-modal ion-content {
+  background-color: white; /* Change modal content background color */
+}
+
+ion-modal ion-header {
+  background-color: #f1f1f1; /* Change modal header background color */
+}
+
+ion-modal ion-title {
+  color: #333; /* Change modal title color */
+  font-size: 24px; /* Change modal title font size */
+}
+
+ion-modal ion-buttons {
+  justify-content: flex-end; /* Align modal buttons to the right */
+}
+
+ion-modal ion-button {
+  color: #333; /* Change modal button text color */
+  font-size: 16px; /* Change modal button text font size */
+  --ripple-color: #333; /* Change modal button ripple color */
 }
 </style>
