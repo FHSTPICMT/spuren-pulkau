@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header v-if="!allowsGeo" :translucent="true">
       <ion-toolbar color="danger">
-        <ion-title>GPS notwendig</ion-title>
+        <ion-title>GPS aktivieren</ion-title>
       </ion-toolbar>
     </ion-header>
 

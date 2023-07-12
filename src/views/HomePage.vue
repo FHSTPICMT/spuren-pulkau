@@ -7,9 +7,9 @@
             <h1>Web Applikation DER STEINBRUCH, <br>DAS LAGER UND DIE ORTSCHAFTEN</h1>
           </ion-text>
         </ion-row>
-        <ion-row>
-          <ion-list lines="none">
-            <ul class="navigation-list mt-6">
+        <ion-row class="mt-6">
+          <ion-list lines="none bg-black">
+            <ul class="navigation-list">
               <li @click="this.$router.push('/gps')">
                 <ion-icon color="white" :icon="globe()" class="mr-2 font-bold"></ion-icon>
                 <strong>

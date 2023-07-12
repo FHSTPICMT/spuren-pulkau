@@ -5,21 +5,21 @@
         <ion-col class="p-0">
           <div>
             <ion-img
-                :src="imageSource"
-                alt="Welcome"
+              :src="currentImage"
+              alt="Welcome"
             ></ion-img>
-            <audio ref="audioPlayer" :src="audioSource" @timeupdate="onTimeUpdate"></audio>
+            <audio ref="audioPlayer" :src="currentAudio" @timeupdate="onTimeUpdate"></audio>
             <progress class="w-full" :max="audioDuration" :value="currentTime"></progress>
           </div>
           <div class="flex justify-around text-center">
-            <ion-button>
+            <ion-button @click="previousAudio">
               <ion-icon slot="start" :icon="playSkipBackOutline()"></ion-icon>
             </ion-button>
             <ion-button @click="toggleAudio">
               <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="playOutline()"></ion-icon>
               <ion-icon v-else slot="start" :icon="pauseOutline()"></ion-icon>
             </ion-button>
-            <ion-button>
+            <ion-button @click="nextAudio">
               <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>
             </ion-button>
           </div>
@@ -30,7 +30,6 @@
 </template>
 
 <script lang="js">
-// TODO - Fetch audio and photography dynamically
 import {defineComponent} from 'vue';
 import {
   IonContent,
@@ -41,6 +40,8 @@ import {
 } from '@ionic/vue';
 import {IonRippleEffect} from '@ionic/vue';
 import {playOutline, playSkipBackOutline, playSkipForwardOutline, pauseOutline} from 'ionicons/icons';
+import {TRACKS_NO_GPS} from '@/utils/constants.js';
+
 
 export default defineComponent({
   components: {
@@ -51,28 +52,38 @@ export default defineComponent({
     IonButton,
     IonContent,
     IonPage,
-    IonRippleEffect
+    IonRippleEffect,
+    TRACKS_NO_GPS
   },
-  mounted() {
+  mounted () {
     this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
       this.audioDuration = this.$refs.audioPlayer.duration;
     });
   },
-  data() {
+  data () {
     return {
       initPlay: true,
       imageSource: 'src/assets/img/00_Welcome.jpg',
       audioSource: 'src/assets/audio/00_Welcome.mp3',
+      currentTrackIndex: 0,
       shouldPlayAudio: false,
       audioDuration: 0,
       currentTime: 0
     };
   },
+  computed: {
+    currentAudio() {
+      return TRACKS_NO_GPS[this.currentTrackIndex].audio
+    },
+    currentImage() {
+      return TRACKS_NO_GPS[this.currentTrackIndex].image
+    }
+  },
   methods: {
-    pauseOutline() {
+    pauseOutline () {
       return pauseOutline
     },
-    toggleAudio() {
+    toggleAudio () {
       this.initPlay = false
       this.shouldPlayAudio = !this.shouldPlayAudio
       if (this.shouldPlayAudio) {
@@ -81,22 +92,32 @@ export default defineComponent({
         this.pauseAudio()
       }
     },
-    playAudio() {
+    playAudio () {
       this.$refs.audioPlayer.play();
     },
-    pauseAudio() {
+    pauseAudio () {
       this.$refs.audioPlayer.pause();
     },
-    onTimeUpdate() {
+    previousAudio () {
+      this.pauseAudio()
+      this.shouldPlayAudio = false;
+      this.currentTrackIndex--
+    },
+    nextAudio () {
+      this.pauseAudio()
+      this.shouldPlayAudio = false;
+      this.currentTrackIndex++
+    },
+    onTimeUpdate () {
       this.currentTime = this.$refs.audioPlayer.currentTime;
     },
-    playSkipForwardOutline() {
+    playSkipForwardOutline () {
       return playSkipForwardOutline
     },
-    playSkipBackOutline() {
+    playSkipBackOutline () {
       return playSkipBackOutline
     },
-    playOutline() {
+    playOutline () {
       return playOutline
     }
   },
