@@ -98,7 +98,6 @@ export default defineComponent({
       return this.tracks[this.currentTrackIndex].audio
     },
     currentImage() {
-      console.log('You are here: ', this.tracks[this.currentTrackIndex].image, this.tracks[this.currentTrackIndex].coords)
       return this.tracks[this.currentTrackIndex].image
     },
     alreadyVisited() {
@@ -125,16 +124,14 @@ export default defineComponent({
             let item = this.tracks[i]
             if(item.hasOwnProperty('coords')) {
               if(item.visited) {
-                console.log('Has been visited already: ' + item.image)
+                //console.log('Has been visited already')
               }
               if (this.currentTrackIndex !== i && this.isWithinRadius(latitude, longitude, item.coords.latitude, item.coords.longitude, this.radiusInMeters)) {
-                console.log('[IN] - In Range of this location: ', item.image, item.coords.latitude + ',' + item.coords.longitude);
+                console.log('You are here: ',item.image.split('/').pop(), '(' + item.coords.latitude + ',' + item.coords.longitude + ')');
                 this.currentTrackIndex = i
                 item.visited = true
                 if (this.$refs.audioPlayer && this.$refs.audioPlayer.readyState === 4) {
                   // TODO automatically play audio
-                  this.shouldPlayAudio = true
-                  this.initPlay = false
                   this.$refs.audioPlayer.volume = 1;
                   this.$refs.audioPlayer.play();
                 }
