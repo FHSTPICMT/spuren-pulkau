@@ -9,8 +9,7 @@
     <ion-modal :is-open="showModal"
                :backdrop-dismiss="false"
                id="no-geo-modal"
-               ref="modal"
-               trigger="open-custom-dialog">
+               ref="modal">
       <div class="wrapper p-4 border-white border rounded">
         <ion-item>
           <ion-icon color="danger" :icon="alertCircleOutline"></ion-icon>

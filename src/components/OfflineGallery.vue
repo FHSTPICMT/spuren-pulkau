@@ -55,12 +55,14 @@ export default defineComponent({
     IonRippleEffect,
     TRACKS_NO_GPS
   },
+  created () {
+    window.addEventListener("orientationchange", this.handleOrientationChange);
+    this.handleOrientationChange()
+  },
   mounted () {
     this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
       this.audioDuration = this.$refs.audioPlayer.duration;
     });
-    window.addEventListener("orientationchange", this.handleOrientationChange);
-    this.handleOrientationChange()
   },
   beforeDestroy () {
     window.removeEventListener("orientationchange", this.handleOrientationChange);

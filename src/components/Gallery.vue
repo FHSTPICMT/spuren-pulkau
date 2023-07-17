@@ -22,9 +22,6 @@
             <ion-button @click="nextAudio">
               <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>
             </ion-button>
-<!--            <ion-button @click="checkLocation">-->
-<!--              <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>-->
-<!--            </ion-button>-->
           </div>
         </ion-col>
       </ion-row>
@@ -70,29 +67,43 @@ export default defineComponent({
       audioDuration: 0,
       currentTime: 0,
       currentImageStyle: {},
-      radiusInMeters: 100,
-      targetLatitude: 48.687626,
-      targetLongitude: 15.853462
+      radiusInMeters: 10,
+      tracks: [],
+      newTrack: false
     };
   },
-  mounted () {
-    if (!this.geoWatcher) {
-      this.watchGeolocation();
-    }
+  created () {
+    // Create a variable array out of the constants, to remember visits
+    this.tracks = [...TRACKS];
 
-    this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
-      this.audioDuration = this.$refs.audioPlayer.duration;
-    });
     window.addEventListener("orientationchange", this.handleOrientationChange);
     this.handleOrientationChange()
   },
+  mounted () {
+    this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
+      this.audioDuration = this.$refs.audioPlayer.duration;
+    });
+
+    if (!this.geoWatcher) {
+      this.watchGeolocation();
+    }
+  },
+  watch: {
+    currentTrackIndex(value) {
+      // Play audio automatically
+    }
+  },
   computed: {
     currentAudio() {
-      return TRACKS[this.currentTrackIndex].audio
+      return this.tracks[this.currentTrackIndex].audio
     },
     currentImage() {
-      return TRACKS[this.currentTrackIndex].image
-    }
+      console.log('You are here: ', this.tracks[this.currentTrackIndex].image, this.tracks[this.currentTrackIndex].coords)
+      return this.tracks[this.currentTrackIndex].image
+    },
+    alreadyVisited() {
+      return this.tracks[this.currentTrackIndex].visited
+    },
   },
   methods: {
     async watchGeolocation() {
@@ -108,39 +119,31 @@ export default defineComponent({
         } else {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          console.log('Current position:', latitude, longitude);
-          const isWithinRadius = this.isWithinRadius(latitude, longitude, this.targetLatitude, this.targetLongitude, this.radiusInMeters);
-          if (isWithinRadius) {
-            console.log('[IN] - User is within the specified radius');
-          } else {
-            console.log('[OUT] - User is NOT within the specified radius');
+          console.log('User position:', latitude, longitude);
+
+          for (let i = 0; i < this.tracks.length; i++) {
+            let item = this.tracks[i]
+            if(item.hasOwnProperty('coords')) {
+              if(item.visited) {
+                console.log('Has been visited already: ' + item.image)
+              }
+              if (this.currentTrackIndex !== i && this.isWithinRadius(latitude, longitude, item.coords.latitude, item.coords.longitude, this.radiusInMeters)) {
+                console.log('[IN] - In Range of this location: ', item.image, item.coords.latitude + ',' + item.coords.longitude);
+                this.currentTrackIndex = i
+                item.visited = true
+                if (this.$refs.audioPlayer && this.$refs.audioPlayer.readyState === 4) {
+                  // TODO automatically play audio
+                  this.shouldPlayAudio = true
+                  this.initPlay = false
+                  this.$refs.audioPlayer.volume = 1;
+                  this.$refs.audioPlayer.play();
+                }
+                break
+              }
+            }
           }
         }
       });
-    },
-    checkLocation() {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const userLatitude = position.coords.latitude;
-            const userLongitude = position.coords.longitude;
-
-            // Call a function to check if the user is within the specified radius
-            const isWithinRadius = this.isWithinRadius(userLatitude, userLongitude, this.targetLatitude, this.targetLongitude, this.radiusInMeters);
-
-            if (isWithinRadius) {
-              console.log('[IN] - User is within the specified radius');
-            } else {
-              console.log('[OUT] - User is NOT within the specified radius');
-            }
-          },
-          error => {
-            console.error('Error getting current position:', error);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported in this browser.');
-      }
     },
     isWithinRadius(userLatitude, userLongitude, targetLatitude, targetLongitude, radiusInMeters) {
       const distance = this.calculateDistance(userLatitude, userLongitude, targetLatitude, targetLongitude);
@@ -169,6 +172,7 @@ export default defineComponent({
     toggleAudio () {
       this.initPlay = false
       this.shouldPlayAudio = !this.shouldPlayAudio
+      console.log('shouldPlay', this.shouldPlayAudio)
       if (this.shouldPlayAudio) {
         this.playAudio()
       } else {
@@ -202,23 +206,23 @@ export default defineComponent({
     },
     playOutline () {
       return playOutline
-    }
-  },
-  handleOrientationChange () {
-    console.log('orientation change detected (width, height):', window.innerWidth, window.innerHeight)
-    if (window.innerWidth > window.innerHeight) {
-      // Landscape mode
-      this.currentImageStyle = {
-        width: "auto",
-        height: "300px",
-      };
-    } else {
-      // Portrait mode
-      this.currentImageStyle = {
-        width: "100%",
-        height: '100%',
-      };
-    }
+    },
+    handleOrientationChange () {
+      //console.log('orientation change detected (width, height):', window.innerWidth, window.innerHeight)
+      if (window.innerWidth > window.innerHeight) {
+        // Landscape mode
+        this.currentImageStyle = {
+          width: "auto",
+          height: "300px",
+        };
+      } else {
+        // Portrait mode
+        this.currentImageStyle = {
+          width: "100%",
+          height: '100%',
+        };
+      }
+    },
   },
 });
 </script>
