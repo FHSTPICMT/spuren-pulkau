@@ -1,9 +1,10 @@
 <template>
-    <ion-grid class="vertical-center w-full p-0">
-      <ion-row class="ion-align-items-center">
-        <ion-col class="p-0">
+  <ion-grid class="vertical-center w-full p-0" :fullscreen="true">
+    <ion-row class="ion-align-items-center">
+      <ion-col class="p-0">
           <div>
             <ion-img
+              :style="currentImageStyle"
               :src="currentImage"
               alt="Welcome"
             ></ion-img>
@@ -22,9 +23,9 @@
               <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>
             </ion-button>
           </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </template>
 
 <script lang="js">
@@ -58,9 +59,15 @@ export default defineComponent({
     this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
       this.audioDuration = this.$refs.audioPlayer.duration;
     });
+    window.addEventListener("orientationchange", this.handleOrientationChange);
+    this.handleOrientationChange()
+  },
+  beforeDestroy () {
+    window.removeEventListener("orientationchange", this.handleOrientationChange);
   },
   data () {
     return {
+      currentImageStyle: {},
       initPlay: true,
       imageSource: 'src/assets/img/00_Welcome.jpg',
       audioSource: 'src/assets/audio/00_Welcome.mp3',
@@ -71,14 +78,30 @@ export default defineComponent({
     };
   },
   computed: {
-    currentAudio() {
+    currentAudio () {
       return TRACKS_NO_GPS[this.currentTrackIndex].audio
     },
-    currentImage() {
+    currentImage () {
       return TRACKS_NO_GPS[this.currentTrackIndex].image
     }
   },
   methods: {
+    handleOrientationChange () {
+      //console.log('orientation change detected (width, height):', window.innerWidth, window.innerHeight)
+      if (window.innerWidth > window.innerHeight) {
+        // Landscape mode
+        this.currentImageStyle = {
+          width: "auto",
+          height: "300px",
+        };
+      } else {
+        // Portrait mode
+        this.currentImageStyle = {
+          width: "100%",
+          height: '100%',
+        };
+      }
+    },
     pauseOutline () {
       return pauseOutline
     },
@@ -130,5 +153,11 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+@media only screen and (orientation: landscape) {
+  ion-img /deep/ img {
+    object-fit: cover;
+    max-height: 300px;
+  }
 }
 </style>

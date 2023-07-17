@@ -6,10 +6,6 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content v-if="allowsGeo" :fullscreen="true">
-      <gallery></gallery>
-    </ion-content>
-
     <ion-modal :is-open="showModal"
                :backdrop-dismiss="false"
                id="no-geo-modal"
@@ -25,10 +21,15 @@
           erlaube den Zugriff in den Einstellungen.
         </ion-item>
         <ion-buttons slot="end">
-          <ion-button :strong="true" @click="cancel()" class="border border-white rounded text-white p-2">Ok</ion-button>
+          <ion-button :strong="true" @click="cancel()" class="border border-white rounded text-white p-2">Ok
+          </ion-button>
         </ion-buttons>
       </div>
     </ion-modal>
+
+    <ion-content v-if="allowsGeo" :fullscreen="true">
+      <gallery></gallery>
+    </ion-content>
   </ion-page>
 </template>
 
@@ -40,65 +41,36 @@ import Gallery from "@/components/Gallery.vue";
 
 export default {
   components: {Gallery, IonApp, IonRouterOutlet, IonModal, IonIcon, IonButton, IonContent, IonPage},
-  data() {
+  data () {
     return {
-      myTest: false,
-      allowsGeo: true,
-      geoWatcher: null,
-      locationHasBeenLoaded: false,
-      scan: false,
       person,
       alertCircleOutline,
-      showModal: false
+      allowsGeo: true,
+      showModal: false,
     };
   },
-  created() {
-    if (!this.geoWatcher) {
-      this.initGeolocationWatcher();
-      this.locationHasBeenLoaded = true
-      console.log('Geolocation has been loaded');
-    }
-  },
-  computed: {},
-  watch: {
-    // TODO - watch user location
+  created () {
+    this.checkPermission();
   },
   methods: {
-    cancel() {
+    cancel () {
       this.showModal = false
       this.$refs.modal.$el.dismiss(null, 'cancel');
     },
-    confirm() {
+    confirm () {
       const name = this.$refs.input.$el.value;
       this.$refs.modal.$el.dismiss(name, 'confirm');
     },
-    async initGeolocationWatcher() {
+    async checkPermission () {
       const permission = await Geolocation.checkPermissions();
       console.log('gps user-permission', permission)
       if (permission.location !== "granted") {
         this.allowsGeo = false;
         this.showModal = true
+      } else {
+        this.allowsGeo = true;
+        this.showModal = false
       }
-
-      const options = {
-        enableHighAccuracy: true,
-        maximumAge: 10000,
-        timeout: 27000,
-      };
-
-      this.geoWatcher = await Geolocation.watchPosition(
-          options,
-          (position, error) => {
-            this.allowsGeo = true;
-            if (error) {
-              this.allowsGeo = false;
-              console.log('location error', error)
-            }
-            if (position) {
-              console.log('user location', position)
-            }
-          }
-      );
     },
   },
 };
@@ -109,7 +81,6 @@ ion-header {
   .logo {
     height: 100%;
   }
-
 
   .home-button {
     background-color: transparent;
