@@ -10,17 +10,17 @@
         <ion-row class="mt-6">
           <ion-list lines="none bg-black">
             <ul class="navigation-list">
-              <li @click="this.$router.push('/gps')">
+              <li @click="redirect('/gps')">
                 <ion-icon color="white" :icon="globe()" class="mr-2 font-bold"></ion-icon>
                 <strong>
                   Mit GPS Empfang
                 </strong>
               </li>
-              <li @click="this.$router.push('/gallery')">
+              <li @click="redirect('/gallery')">
                 <ion-icon color="white" :icon="image()" class="mr-2 font-bold"></ion-icon>
                 <strong>Ersatzmodus ohne GPS Empfang</strong>
               </li>
-              <li @click="this.$router.push('/info')">
+              <li @click="redirect('/info')">
                 <ion-icon color="white" :icon="documentText()" class="mr-2 font-bold"></ion-icon>
                 <strong>Projektbeschreibung und Quellen</strong>
               </li>
@@ -33,7 +33,7 @@
   </ion-page>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import {IonNav, IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/vue';
 import GalleryPage from './GalleryPage.vue';
 import {documentText, globe, image} from "ionicons/icons";
@@ -48,6 +48,9 @@ export default {
     },
     documentText() {
       return documentText
+    },
+    redirect(path) {
+      this.$router.push(path);
     }
   },
   components: {IonNav, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, documentText, globe, image},
