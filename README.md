@@ -31,6 +31,9 @@ cd /spuren-pulkau/
 # Install dependencies
 yarn
 
+# or with NPM
+npm install
+
 # Start application in browser
 ionic serve
 ```
