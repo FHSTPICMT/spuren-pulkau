@@ -62,7 +62,7 @@ export default {
     },
     async checkPermission () {
       const permission = await Geolocation.checkPermissions();
-      console.log('gps user-permission', permission)
+      //console.log('gps user-permission', permission)
       if (permission.location !== "granted") {
         this.allowsGeo = false;
         this.showModal = true

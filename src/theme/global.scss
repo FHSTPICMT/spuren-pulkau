@@ -23,5 +23,17 @@ h1 {
   background-color: $background-color;
 }
 
+.transparent-button {
+  background-color: transparent;
+  color: grey;
+}
 
+.custom-progress::-webkit-progress-bar {
+  background-color: black;
+  cursor: pointer;
+}
 
+.custom-progress::-webkit-progress-value {
+  background-color: grey;
+  cursor: pointer;
+}

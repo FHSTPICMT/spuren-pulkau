@@ -9,18 +9,18 @@
               alt="Welcome"
             ></ion-img>
             <audio ref="audioPlayer" :src="currentAudio" @timeupdate="onTimeUpdate"></audio>
-            <progress class="w-full" :max="audioDuration" :value="currentTime"></progress>
+            <progress class="w-full custom-progress" :max="audioDuration" :value="currentTime" @click="seekAudio"></progress>
           </div>
           <div class="flex justify-around text-center">
-            <ion-button @click="previousAudio">
-              <ion-icon slot="start" :icon="playSkipBackOutline()"></ion-icon>
+            <ion-button @click="previousAudio" fill="clear" class="transparent-button">
+              <ion-icon slot="start" :icon="playSkipBack()"></ion-icon>
             </ion-button>
-            <ion-button @click="toggleAudio">
-              <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="playOutline()"></ion-icon>
-              <ion-icon v-else slot="start" :icon="pauseOutline()"></ion-icon>
+            <ion-button @click="toggleAudio" fill="clear" class="transparent-button" style="padding-left: 14px">
+              <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="play()" style="font-size: 45px;"></ion-icon>
+              <ion-icon v-else slot="start" :icon="pause()" style="font-size: 45px;"></ion-icon>
             </ion-button>
-            <ion-button @click="nextAudio">
-              <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>
+            <ion-button @click="nextAudio" fill="clear" class="transparent-button">
+              <ion-icon slot="start" :icon="playSkipForward()"></ion-icon>
             </ion-button>
           </div>
       </ion-col>
@@ -38,7 +38,7 @@ import {
   IonModal, IonIcon, IonButton
 } from '@ionic/vue';
 import {IonRippleEffect} from '@ionic/vue';
-import {playOutline, playSkipBackOutline, playSkipForwardOutline, pauseOutline} from 'ionicons/icons';
+import {play, playSkipBack, playSkipForward, pause} from 'ionicons/icons';
 import {TRACKS_NO_GPS} from '@/utils/constants.js';
 
 
@@ -70,7 +70,6 @@ export default defineComponent({
   data () {
     return {
       currentImageStyle: {},
-      initPlay: true,
       imageSource: 'src/assets/img/00_Welcome.jpg',
       audioSource: 'src/assets/audio/00_Welcome.mp3',
       currentTrackIndex: 0,
@@ -104,11 +103,10 @@ export default defineComponent({
         };
       }
     },
-    pauseOutline () {
-      return pauseOutline
+    pause () {
+      return pause
     },
     toggleAudio () {
-      this.initPlay = false
       this.shouldPlayAudio = !this.shouldPlayAudio
       if (this.shouldPlayAudio) {
         this.playAudio()
@@ -123,27 +121,35 @@ export default defineComponent({
       this.$refs.audioPlayer.pause();
     },
     previousAudio () {
-      this.pauseAudio()
-      this.shouldPlayAudio = false;
       this.currentTrackIndex--
     },
     nextAudio () {
-      this.pauseAudio()
-      this.shouldPlayAudio = false;
       this.currentTrackIndex++
     },
     onTimeUpdate () {
       this.currentTime = this.$refs.audioPlayer.currentTime;
     },
-    playSkipForwardOutline () {
-      return playSkipForwardOutline
+    playSkipForward () {
+      return playSkipForward
     },
-    playSkipBackOutline () {
-      return playSkipBackOutline
+    playSkipBack () {
+      return playSkipBack
     },
-    playOutline () {
-      return playOutline
-    }
+    play () {
+      return play
+    },
+    seekAudio(event) {
+      const progressBar = event.target;
+      const clickX = event.clientX; // Get the horizontal position of the click event
+      const progressBarRect = progressBar.getBoundingClientRect();
+      const progressBarWidth = progressBarRect.width;
+
+      // Calculate the new time position based on the click position
+      const newTime = (clickX - progressBarRect.left) / progressBarWidth * this.audioDuration;
+
+      // Set the audio player's currentTime to the new time
+      this.$refs.audioPlayer.currentTime = newTime;
+    },
   },
 });
 </script>

@@ -8,21 +8,13 @@
               :src="currentImage"
               alt="Welcome"
             ></ion-img>
-            <audio ref="audioPlayer" :src="currentAudio" @timeupdate="onTimeUpdate"></audio>
-            <progress class="w-full" :max="audioDuration" :value="currentTime"></progress>
-          </div>
-          <div class="flex justify-around text-center">
-            <ion-button @click="previousAudio">
-              <ion-icon slot="start" :icon="playSkipBackOutline()"></ion-icon>
-            </ion-button>
-            <ion-button @click="toggleAudio">
-              <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="playOutline()"></ion-icon>
-              <ion-icon v-else slot="start" :icon="pauseOutline()"></ion-icon>
-            </ion-button>
-            <ion-button @click="nextAudio">
-              <ion-icon slot="start" :icon="playSkipForwardOutline()"></ion-icon>
+            <audio ref="audioPlayer" :src="currentAudio" @timeupdate="onTimeUpdate" @ended="playNextTrack"></audio>
+            <progress class="w-full custom-progress" :max="audioDuration" :value="currentTime" @click="seekAudio"></progress>
+            <ion-button v-show="!started" @click="startTour" class="action-btn" fill="clear">
+              <ion-icon slot="start" :icon="play()" style="color:#505050; font-size: 45px;"></ion-icon>
             </ion-button>
           </div>
+          <div :class="{ 'overlay': !started }"></div>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -38,7 +30,7 @@ import {
   IonModal, IonIcon, IonButton
 } from '@ionic/vue';
 import {IonRippleEffect} from '@ionic/vue';
-import {playOutline, playSkipBackOutline, playSkipForwardOutline, pauseOutline} from 'ionicons/icons';
+import {play, pause} from 'ionicons/icons';
 import {TRACKS} from '@/utils/constants.js';
 import {Geolocation} from "@capacitor/geolocation";
 
@@ -59,9 +51,10 @@ export default defineComponent({
   data () {
     return {
       geoWatcher: null,
-      initPlay: true,
-      imageSource: 'src/assets/img/00_Welcome.jpg',
-      audioSource: 'src/assets/audio/00_Welcome.mp3',
+      started: false,
+      firstVisit: true,
+      initImageSource: 'src/assets/img/00_Welcome.jpg',
+      initAudioSource: 'src/assets/audio/00_Welcome.mp3',
       currentTrackIndex: 0,
       shouldPlayAudio: false,
       audioDuration: 0,
@@ -69,7 +62,9 @@ export default defineComponent({
       currentImageStyle: {},
       radiusInMeters: 10,
       tracks: [],
-      newTrack: false
+      newTrack: false,
+      latitude: null,
+      longitude: null
     };
   },
   created () {
@@ -88,11 +83,6 @@ export default defineComponent({
       this.watchGeolocation();
     }
   },
-  watch: {
-    currentTrackIndex(value) {
-      // Play audio automatically
-    }
-  },
   computed: {
     currentAudio() {
       return this.tracks[this.currentTrackIndex].audio
@@ -105,6 +95,9 @@ export default defineComponent({
     },
   },
   methods: {
+    playNextTrack() {
+      this.setTrackByPosition()
+    },
     async watchGeolocation() {
       const options = {
         enableHighAccuracy: true,
@@ -116,31 +109,39 @@ export default defineComponent({
         if (error) {
           console.error('Error getting geolocation:', error);
         } else {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          console.log('User position:', latitude, longitude);
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
 
-          for (let i = 0; i < this.tracks.length; i++) {
-            let item = this.tracks[i]
-            if(item.hasOwnProperty('coords')) {
-              if(item.visited) {
-                //console.log('Has been visited already')
-              }
-              if (this.currentTrackIndex !== i && this.isWithinRadius(latitude, longitude, item.coords.latitude, item.coords.longitude, this.radiusInMeters)) {
-                console.log('You are here: ',item.image.split('/').pop(), '(' + item.coords.latitude + ',' + item.coords.longitude + ')');
-                this.currentTrackIndex = i
-                item.visited = true
-                if (this.$refs.audioPlayer && this.$refs.audioPlayer.readyState === 4) {
-                  // TODO automatically play audio
-                  this.$refs.audioPlayer.volume = 1;
-                  this.$refs.audioPlayer.play();
-                }
-                break
-              }
-            }
+          if(!this.firstVisit) {
+            this.setTrackByPosition()
           }
         }
       });
+    },
+    setTrackByPosition() {
+      console.log('SET TRACK', this.latitude, this.longitude)
+      if(this.latitude && this.longitude) {
+        for (let i = 0; i < this.tracks.length; i++) {
+          let item = this.tracks[i]
+
+          if (item.hasOwnProperty('coords')) {
+            if (this.currentTrackIndex !== i && this.isWithinRadius(this.latitude, this.longitude, item.coords.latitude, item.coords.longitude, this.radiusInMeters)) {
+              console.log((this.tracks[i].visited ? '[GEHÖRT] ' : '') + this.removeExtension(item.image.split('/').pop()), '(' + item.coords.latitude + ',' + item.coords.longitude + ')');
+              if (this.tracks[i].visited === true) {
+                this.$refs.audioPlayer.pause()
+                break
+              }
+              this.currentTrackIndex = i
+              this.tracks[i].visited = true
+              this.playAudio();
+              break
+            }
+          }
+        }
+      } else {
+        // When no coordinates, set next track
+        this.currentTrackIndex++;
+      }
     },
     isWithinRadius(userLatitude, userLongitude, targetLatitude, targetLongitude, radiusInMeters) {
       const distance = this.calculateDistance(userLatitude, userLongitude, targetLatitude, targetLongitude);
@@ -163,46 +164,53 @@ export default defineComponent({
     toRadians(degrees) {
       return degrees * (Math.PI / 180);
     },
-    pauseOutline () {
-      return pauseOutline
-    },
-    toggleAudio () {
-      this.initPlay = false
-      this.shouldPlayAudio = !this.shouldPlayAudio
-      console.log('shouldPlay', this.shouldPlayAudio)
-      if (this.shouldPlayAudio) {
-        this.playAudio()
-      } else {
-        this.pauseAudio()
-      }
+    startTour () {
+      this.currentAudio = this.initAudioSource
+      this.currentImage = this.initImageSource
+      this.playAudio()
+      this.started = true;
     },
     playAudio () {
-      this.$refs.audioPlayer.play();
+      if (this.$refs.audioPlayer && this.$refs.audioPlayer.src) {
+        const canAutoplay = this.$refs.audioPlayer.autoplay !== undefined;
+
+        if (canAutoplay) {
+          this.$refs.audioPlayer.play();
+          if(this.firstVisit) {
+            // Initialize autoplay function
+            this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
+              this.$refs.audioPlayer.play();
+            });
+            this.firstVisit = false
+          }
+        } else {
+          // Autoplay is not supported, start playback on user interaction
+          this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
+            this.$refs.audioPlayer.play();
+          });
+        }
+      }
     },
-    pauseAudio () {
-      this.$refs.audioPlayer.pause();
-    },
-    previousAudio () {
-      this.pauseAudio()
-      this.shouldPlayAudio = false;
-      this.currentTrackIndex--
-    },
-    nextAudio () {
-      this.pauseAudio()
-      this.shouldPlayAudio = false;
-      this.currentTrackIndex++
+    seekAudio(event) {
+      const progressBar = event.target;
+      const clickX = event.clientX; // Get the horizontal position of the click event
+      const progressBarRect = progressBar.getBoundingClientRect();
+      const progressBarWidth = progressBarRect.width;
+
+      // Calculate the new time position based on the click position
+      const newTime = (clickX - progressBarRect.left) / progressBarWidth * this.audioDuration;
+
+      // Set the audio player's currentTime to the new time
+      this.$refs.audioPlayer.currentTime = newTime;
     },
     onTimeUpdate () {
       this.currentTime = this.$refs.audioPlayer.currentTime;
     },
-    playSkipForwardOutline () {
-      return playSkipForwardOutline
+    play () {
+      return play
     },
-    playSkipBackOutline () {
-      return playSkipBackOutline
-    },
-    playOutline () {
-      return playOutline
+    pause () {
+      return pause
     },
     handleOrientationChange () {
       //console.log('orientation change detected (width, height):', window.innerWidth, window.innerHeight)
@@ -220,6 +228,15 @@ export default defineComponent({
         };
       }
     },
+    removeExtension(filename) {
+      if (filename.endsWith(".jpg")) {
+        return filename.slice(0, -4); // Remove the last 4 characters (".jpg")
+      } else if (filename.endsWith(".png")) {
+        return filename.slice(0, -4); // Remove the last 4 characters (".png")
+      } else {
+        return filename; // If the string doesn't end with ".jpg" or ".png", return it as is
+      }
+    }
   },
 });
 </script>
@@ -231,5 +248,23 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+.action-btn {
+  position: absolute;
+  transform: translate(-50%,-50%);
+  margin-right: -50%;
+  top: 46%;
+  left: 52%;
+}
+.overlay {
+  position: fixed; /* Fixed position to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparent black background color */
+  z-index: 999; /* Ensure the overlay is on top of other content */
+  pointer-events: none; /* Allow clicks to pass through to underlying elements */
+  /* Additional styles as needed */
 }
 </style>

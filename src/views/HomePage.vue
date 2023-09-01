@@ -63,6 +63,9 @@ export default {
 </script>
 
 <style scoped>
+li {
+  cursor: pointer;
+}
 #container {
   padding: 1em;
   position: absolute;
