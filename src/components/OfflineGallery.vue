@@ -177,19 +177,19 @@ export default defineComponent({
     max-height: 500px;
   }
 }
-@media only screen and (orientation: landscape) and (min-height: 701px) and (max-height: 1000px){
+@media only screen and (orientation: landscape) and (min-height: 701px) and (max-height: 800px){
   img {
     object-fit: cover;
     max-height: 700px;
   }
 }
-@media only screen and (orientation: landscape) and (min-height: 801px){
+@media only screen and (orientation: landscape) and (min-height: 801px) and (max-height: 1100px){
   img {
     object-fit: cover;
     max-height: 800px;
   }
 }
-@media only screen and (orientation: landscape) and (min-height: 1100px){
+@media only screen and (orientation: landscape) and (min-height: 1101px){
   img {
     object-fit: cover;
     max-height: 100%;
