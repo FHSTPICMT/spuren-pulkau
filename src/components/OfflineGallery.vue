@@ -3,11 +3,7 @@
     <ion-row class="ion-align-items-center">
       <ion-col class="p-0">
           <div>
-            <ion-img
-              :style="currentImageStyle"
-              :src="currentImage"
-              alt="Welcome"
-            ></ion-img>
+            <img :src="currentImage" alt="Welcome">
             <audio ref="audioPlayer" :src="currentAudio" @timeupdate="onTimeUpdate"></audio>
             <progress class="w-full custom-progress" :max="audioDuration" :value="currentTime" @click="seekAudio"></progress>
           </div>
@@ -55,22 +51,14 @@ export default defineComponent({
     IonRippleEffect,
     TRACKS_NO_GPS
   },
-  created () {
-    window.addEventListener("orientationchange", this.handleOrientationChange);
-    this.handleOrientationChange()
-  },
   mounted () {
     this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
       this.audioDuration = this.$refs.audioPlayer.duration;
     });
   },
-  beforeDestroy () {
-    window.removeEventListener("orientationchange", this.handleOrientationChange);
-  },
   data () {
     return {
       firstVisit: true,
-      currentImageStyle: {},
       imageSource: 'src/assets/img/00_Welcome.jpg',
       audioSource: 'src/assets/audio/00_Welcome.mp3',
       currentTrackIndex: 0,
@@ -88,22 +76,6 @@ export default defineComponent({
     }
   },
   methods: {
-    handleOrientationChange () {
-      //console.log('orientation change detected (width, height):', window.innerWidth, window.innerHeight)
-      if (window.innerWidth > window.innerHeight) {
-        // Landscape mode
-        this.currentImageStyle = {
-          width: "auto",
-          height: "300px",
-        };
-      } else {
-        // Portrait mode
-        this.currentImageStyle = {
-          width: "100%",
-          height: '100%',
-        };
-      }
-    },
     pause () {
       return pause
     },
@@ -187,10 +159,34 @@ export default defineComponent({
   align-items: center;
   height: 100vh;
 }
-@media only screen and (orientation: landscape) {
-  ion-img /deep/ img {
+@media only screen and (orientation: landscape) and (max-height: 500px){
+  img {
     object-fit: cover;
     max-height: 300px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 501px) and (max-height: 600px){
+  img {
+    object-fit: cover;
+    max-height: 400px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 601px) and (max-height: 700px){
+  img {
+    object-fit: cover;
+    max-height: 500px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 701px) and (max-height: 1000px){
+  img {
+    object-fit: cover;
+    max-height: 700px;
+  }
+}
+@media only screen and (orientation: portrait) {
+  img {
+    object-fit: cover;
+    max-height: 700px;
   }
 }
 </style>

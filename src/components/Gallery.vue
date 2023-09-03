@@ -3,11 +3,7 @@
       <ion-row class="ion-align-items-center">
         <ion-col class="p-0">
           <div>
-            <ion-img
-              :style="currentImageStyle"
-              :src="currentImage"
-              alt="Welcome"
-            ></ion-img>
+            <img :src="currentImage" alt="Welcome">
             <audio ref="audioPlayer" :src="currentAudio" @timeupdate="onTimeUpdate" @ended="playNextTrack"></audio>
             <progress class="w-full custom-progress" :max="audioDuration" :value="currentTime" @click="seekAudio"></progress>
             <ion-button v-show="!started" @click="startTour" class="action-btn" fill="clear">
@@ -59,7 +55,6 @@ export default defineComponent({
       shouldPlayAudio: false,
       audioDuration: 0,
       currentTime: 0,
-      currentImageStyle: {},
       radiusInMeters: 10,
       tracks: [],
       newTrack: false,
@@ -70,9 +65,6 @@ export default defineComponent({
   created () {
     // Create a variable array out of the constants, to remember visits
     this.tracks = [...TRACKS];
-
-    window.addEventListener("orientationchange", this.handleOrientationChange);
-    this.handleOrientationChange()
   },
   mounted () {
     this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
@@ -211,22 +203,6 @@ export default defineComponent({
     pause () {
       return pause
     },
-    handleOrientationChange () {
-      //console.log('orientation change detected (width, height):', window.innerWidth, window.innerHeight)
-      if (window.innerWidth > window.innerHeight) {
-        // Landscape mode
-        this.currentImageStyle = {
-          width: "auto",
-          height: "300px",
-        };
-      } else {
-        // Portrait mode
-        this.currentImageStyle = {
-          width: "100%",
-          height: '100%',
-        };
-      }
-    },
     removeExtension(filename) {
       if (filename.endsWith(".jpg")) {
         return filename.slice(0, -4); // Remove the last 4 characters (".jpg")
@@ -256,14 +232,43 @@ export default defineComponent({
   left: 52%;
 }
 .overlay {
-  position: fixed; /* Fixed position to cover the entire viewport */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Transparent black background color */
-  z-index: 999; /* Ensure the overlay is on top of other content */
-  pointer-events: none; /* Allow clicks to pass through to underlying elements */
-  /* Additional styles as needed */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  pointer-events: none;
+}
+@media only screen and (orientation: landscape) and (max-height: 500px){
+  img {
+    object-fit: cover;
+    max-height: 300px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 501px) and (max-height: 600px){
+  img {
+    object-fit: cover;
+    max-height: 400px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 601px) and (max-height: 700px){
+  img {
+    object-fit: cover;
+    max-height: 500px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 701px) and (max-height: 1000px){
+  img {
+    object-fit: cover;
+    max-height: 700px;
+  }
+}
+@media only screen and (orientation: portrait) {
+  img {
+    object-fit: cover;
+    max-height: 700px;
+  }
 }
 </style>
