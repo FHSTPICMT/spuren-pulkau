@@ -119,7 +119,6 @@ export default defineComponent({
       });
     },
     setTrackByPosition() {
-      console.log('SET TRACK', this.latitude, this.longitude)
       if(this.latitude && this.longitude) {
         for (let i = 0; i < this.tracks.length; i++) {
           let item = this.tracks[i]

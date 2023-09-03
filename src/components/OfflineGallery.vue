@@ -69,6 +69,7 @@ export default defineComponent({
   },
   data () {
     return {
+      firstVisit: true,
       currentImageStyle: {},
       imageSource: 'src/assets/img/00_Welcome.jpg',
       audioSource: 'src/assets/audio/00_Welcome.mp3',
@@ -115,16 +116,40 @@ export default defineComponent({
       }
     },
     playAudio () {
-      this.$refs.audioPlayer.play();
+      if (this.$refs.audioPlayer && this.$refs.audioPlayer.src) {
+        const canAutoplay = this.$refs.audioPlayer.autoplay !== undefined;
+        this.shouldPlayAudio = true
+
+        if (canAutoplay) {
+          this.$refs.audioPlayer.play();
+          if(this.firstVisit) {
+            // Initialize autoplay function
+            this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
+              this.$refs.audioPlayer.play();
+            });
+            this.firstVisit = false
+          }
+        } else {
+          // Autoplay is not supported, start playback on user interaction
+          this.$refs.audioPlayer.addEventListener('loadedmetadata', () => {
+            this.$refs.audioPlayer.play();
+          });
+        }
+      }
     },
     pauseAudio () {
+      this.shouldPlayAudio = false;
       this.$refs.audioPlayer.pause();
     },
     previousAudio () {
+      this.pauseAudio()
       this.currentTrackIndex--
+      this.playAudio()
     },
     nextAudio () {
+      this.pauseAudio()
       this.currentTrackIndex++
+      this.playAudio()
     },
     onTimeUpdate () {
       this.currentTime = this.$refs.audioPlayer.currentTime;
