@@ -9,14 +9,14 @@
           </div>
           <div class="flex justify-around text-center">
             <ion-button @click="previousAudio" fill="clear" class="transparent-button">
-              <ion-icon slot="start" :icon="playSkipBack()"></ion-icon>
+              <ion-icon slot="start" :icon="playSkipBack()" style="font-size: 30px;"></ion-icon>
             </ion-button>
             <ion-button @click="toggleAudio" fill="clear" class="transparent-button" style="padding-left: 14px">
-              <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="play()" style="font-size: 45px;"></ion-icon>
-              <ion-icon v-else slot="start" :icon="pause()" style="font-size: 45px;"></ion-icon>
+              <ion-icon v-if="!shouldPlayAudio" slot="start" :icon="play()" style="font-size: 50px;"></ion-icon>
+              <ion-icon v-else slot="start" :icon="pause()" style="font-size: 50px;"></ion-icon>
             </ion-button>
             <ion-button @click="nextAudio" fill="clear" class="transparent-button">
-              <ion-icon slot="start" :icon="playSkipForward()"></ion-icon>
+              <ion-icon slot="start" :icon="playSkipForward()" style="font-size: 30px;"></ion-icon>
             </ion-button>
           </div>
       </ion-col>
@@ -181,6 +181,18 @@ export default defineComponent({
   img {
     object-fit: cover;
     max-height: 700px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 801px){
+  img {
+    object-fit: cover;
+    max-height: 800px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 1100px){
+  img {
+    object-fit: cover;
+    max-height: 100%;
   }
 }
 @media only screen and (orientation: portrait) {
