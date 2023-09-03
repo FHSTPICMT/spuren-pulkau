@@ -265,22 +265,55 @@ export default defineComponent({
     max-height: 700px;
   }
 }
-@media only screen and (orientation: landscape) and (min-height: 801px) and (max-height: 1100px){
+@media only screen and (orientation: landscape) and (min-height: 801px) and (max-height: 1000px){
   img {
     object-fit: cover;
     max-height: 800px;
   }
 }
-@media only screen and (orientation: landscape) and (min-height: 1101px){
+@media only screen and (orientation: landscape) and (min-height: 1001px) and (max-height: 1200px){
+  img {
+    object-fit: cover;
+    max-height: 800px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 1201px) and (max-height: 1400px){
+  img {
+    object-fit: cover;
+    max-height: 1200px;
+  }
+}
+@media only screen and (orientation: landscape) and (min-height: 1401px){
   img {
     object-fit: cover;
     max-height: 100%;
   }
 }
-@media only screen and (orientation: portrait) {
+
+
+
+@media only screen and (orientation: portrait) and (max-height: 1000px){
   img {
     object-fit: cover;
     max-height: 700px;
+  }
+}
+@media only screen and (orientation: portrait) and (min-height: 1001px) and (max-height: 1200px){
+  img {
+    object-fit: cover;
+    max-height: 1000px;
+  }
+}
+@media only screen and (orientation: portrait) and (min-height: 1201px) and (max-height: 1400px){
+  img {
+    object-fit: cover;
+    max-height: 1200px;
+  }
+}
+@media only screen and (orientation: portrait) and (min-height: 1401px){
+  img {
+    object-fit: cover;
+    max-height: 100%;
   }
 }
 </style>
